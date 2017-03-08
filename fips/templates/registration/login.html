@@ -1,0 +1,42 @@
+{% extends "fips/base.html" %}
+{% load staticfiles %}
+
+{% block title %}Login{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+function toggleSign() {
+  $("form").animate({height: "toggle", opacity: "toggle"}, "slow");
+}
+</script>
+{% endblock css %}
+
+{% block content %}
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+<div class="login-page">
+ <div class="form">
+ <form class="register-form">
+   <input id='id_username' name='username' placeholder="username" type="text" autofocus="" required />
+   <input id='id_password' name='username' placeholder="password" type="password" required/>
+   <input type="email" placeholder="email address"/>
+   <input type="text" placeholder="referrer1-referrer2-referrer3"/>
+   <button>create</button>
+   <p class="message">Already registered?
+   <a href="#" onClick="toggleSign();">Sign In</a></p>
+ </form>
+ <form class="login-form" method="post" action="{% url 'sign_in' %}">
+   {% csrf_token %}
+   <input id='id_username' name='username' placeholder="username" type="text" autofocus="" required />
+   <input id='id_password' name='password' placeholder="password" type="password" required />
+   <button type="submit" value='Log in'>login</button>
+   <input type="hidden" name="next" value="{% url 'main' %}" />
+   <p class="message">Not registered?
+   <a href="javascript:toggleSign();">Create an account</a></p>
+ </form>
+ </div>
+</div>
+{% endblock %}
