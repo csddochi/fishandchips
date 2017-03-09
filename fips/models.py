@@ -95,13 +95,13 @@ class User(AbstractUser):
     # user_permissions
 
     user_id = models.AutoField(primary_key=True, verbose_name='User ID', auto_created=True)
-    ref_code = models.CharField(default=get_random_string(length=12), max_length=12)
+    ref_code = models.CharField(get_random_string(length=6), max_length=10)
     referrer = models.TextField(help_text="Referrers' identifiers")
 
     def __str__(self):
-        return username
+        return self.username
 
-    class Meta:
+    class Meta():
         verbose_name_plural = 'Users'
 
 class Post(models.Model):

@@ -19,16 +19,18 @@ function toggleSign() {
 {% endif %}
 <div class="login-page">
  <div class="form">
- <form class="register-form">
+ <form class="register-form" method='post'>
+   {% csrf_token %}
    <input id='id_username' name='username' placeholder="username" type="text" autofocus="" required />
-   <input id='id_password' name='username' placeholder="password" type="password" required/>
-   <input type="email" placeholder="email address"/>
-   <input type="text" placeholder="referrer1-referrer2-referrer3"/>
-   <button>create</button>
+   <input id='id_password' name='password' placeholder="password" type="password" required />
+   <input id='id_email' name='email' placeholder="abc@example.com" type="email" required />
+   <input id='id_referrer' name='referrer' placeholder="referrer1-referrer2-referrer3" type="text" required />
+   <button type="submit" value='Create'>create</button>
+   <input type="hidden" name="next" value="{% url 'login' %}" />
    <p class="message">Already registered?
    <a href="#" onClick="toggleSign();">Sign In</a></p>
  </form>
- <form class="login-form" method="post" action="{% url 'sign_in' %}">
+ <form class="login-form" method="post" action="{% url 'login' %}">
    {% csrf_token %}
    <input id='id_username' name='username' placeholder="username" type="text" autofocus="" required />
    <input id='id_password' name='password' placeholder="password" type="password" required />
