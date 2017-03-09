@@ -1,3 +1,41 @@
+#menu {
+    float: right;
+    li {
+      float: left;
+      padding: 20px 10px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    li:first-child {
+      border-left: none;
+    }
+}
+
+li {
+  list-style-type: none;
+}
+
+.copyright {
+   background: @footer-light-color;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   position: absolute;
+   padding: 10px;
+   box-sizing: border-box;
+   border-top: 2px solid rgba(255, 255, 255, 0.2);
+   font-size: 0.9em;
+   text-align: center;
+}
+
+.poweredby {
+  float: right;
+}
+
+.statement {
+  float: left;
+}
+
 .page-header {
     background-color: #ff9400;
     margin-top: 0;

@@ -1,18 +1,32 @@
-{% load staticfiles %}
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{% block title %}Fish and Chips{% endblock title %}</title>
+    {% block title %}
+    <title>Fish and Chips</title>
+    {% endblock title %}
 
     {% block css %}
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/fips.css' %}">
+    {% endblock %}
+    {% block header-content %}
     {% endblock %}
   </head>
   <body>
-    {% block content %}
-    {% endblock content %}
+    <div id="content">
+	     {% block content %}
+	     {% endblock %}
+    </div>
+    <footer>
+		     <div class="copyright">
+		         <p>
+               <span class="statement">{{ COPYRIGHT|safe }}</span>
+               <span class="poweredby">Powered by
+                 <a href="https://github.com/csddochi/fishandchips">FishNChips</a>
+               </span>
+		         </p>
+	       </div>
+    </footer>
   </body>
 </html>
