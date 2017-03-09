@@ -95,8 +95,10 @@ class User(AbstractUser):
     # user_permissions
 
     user_id = models.AutoField(primary_key=True, verbose_name='User ID', auto_created=True)
-    ref_code = models.CharField(get_random_string(length=6), max_length=10)
-    referrer = models.TextField(help_text="Referrers' identifiers")
+    ref_code = models.CharField(default=get_random_string(length=10),
+        max_length=10, verbose_name='Reference ID')
+    referrer = models.TextField(help_text="identifier1-identifier2-identifier3", 
+        verbose_name='Referrers')
 
     def __str__(self):
         return self.username
