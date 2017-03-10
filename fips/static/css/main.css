@@ -1,6 +1,28 @@
-#categories {
+.date {
+    color: #828282;
+}
+
+.author, th, .category {
+  color: black;
+  text-align: center;
+}
+
+th, td {
+    padding: 5px;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+.categories {
   float: left;
   padding: 10px 10px 10px 30px;
+}
+
+.posts {
+  text-align: left;
+  display: inline-block;
 }
 
 .page-header {
@@ -18,18 +40,4 @@
 
 h1, h2, h3, h4 {
     font-family: 'Roboto', sans-serif;
-}
-
-.copyright {
-   background: lightgrey;
-   padding: 5px 5px 5px 10px;
-   height: 30px;
-   position: absolute;
-   bottom: 0;
-   right: 0;
-   width: 100%;
- }
-
-.poweredby {
-  float: left;
 }

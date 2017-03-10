@@ -4,6 +4,7 @@ from .models import User, Category, Post
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseRedirect
+from django.utils import timezone
 
 # Create your views here.
 def introduction(request):
@@ -39,4 +40,5 @@ def log_out(request):
 @login_required
 def main_view(request):
     categories = Category.objects.filter().order_by('pk')
-    return render(request, 'fips/main.html', {'categories': categories})
+    posts = Post.objects.filter(created_date__lte=timezone.now()).order_by('-created_date')
+    return render(request, 'fips/main.html', {'categories': categories, 'posts':posts})
