@@ -7,6 +7,7 @@
 
     {% block css %}
     {% endblock %}
+
     {% block header-content %}
     {% endblock %}
   </head>
@@ -16,14 +17,16 @@
 	     {% endblock %}
     </div>
     <footer>
-		     <div class="copyright">
-		         <p>
-               <span class="statement">{{ COPYRIGHT|safe }}</span>
-               <span class="poweredby">Powered by
-                 <a href="https://github.com/csddochi/fishandchips">FishNChips</a>
-               </span>
-		         </p>
-	       </div>
+      {% block footer %}
+        <div class="copyright">
+          <p>
+            <span style="color:black;float:right">Copyright &copy; 2017 FishandChips. All rights reserved.</span>
+            <span class='poweredby' style="color:black;"> Powered by &nbsp;
+                <a href="https://github.com/csddochi/fishandchips">FishNChips</a>
+            </span>
+          </p>
+        </div>
+      {% endblock %}
     </footer>
   </body>
 </html>

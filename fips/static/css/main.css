@@ -1,0 +1,35 @@
+#categories {
+  float: left;
+  padding: 10px 10px 10px 30px;
+}
+
+.page-header {
+    background-color: #ff9400;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+.top-menu{
+    color: #ffffff;
+    float: right;
+    font-size: 14pt;
+    margin-right: 20px;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Roboto', sans-serif;
+}
+
+.copyright {
+   background: lightgrey;
+   padding: 5px 5px 5px 10px;
+   height: 30px;
+   position: absolute;
+   bottom: 0;
+   right: 0;
+   width: 100%;
+ }
+
+.poweredby {
+  float: left;
+}

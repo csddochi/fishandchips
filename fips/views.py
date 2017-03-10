@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from .models import User
+from .models import User, Category, Post
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseRedirect
@@ -34,8 +34,9 @@ def sign_up(request, username, password):
 
 def log_out(request):
     logout(request)
-    return render(request, 'registration/login.html', {})
+    return HttpResponseRedirect('/login/')
 
 @login_required
 def main_view(request):
-    return render(request, 'fips/main.html', {})
+    categories = Category.objects.filter().order_by('pk')
+    return render(request, 'fips/main.html', {'categories': categories})
