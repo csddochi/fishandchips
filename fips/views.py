@@ -34,8 +34,8 @@ def sign_up(request, username, password):
 
 def log_out(request):
     logout(request)
-    return render(request, 'fips/login.html', {})
+    return render(request, 'registration/login.html', {})
 
 @login_required
-def main(request):
+def main_view(request):
     return render(request, 'fips/main.html', {})
