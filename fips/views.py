@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseRedirect
 from django.utils import timezone
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def introduction(request):
@@ -40,5 +41,14 @@ def log_out(request):
 @login_required
 def main_view(request):
     categories = Category.objects.filter().order_by('pk')
-    posts = Post.objects.filter(created_date__lte=timezone.now()).order_by('-created_date')
+    post_list = Post.objects.filter(created_date__lte=timezone.now()).order_by('-created_date')
+    page = request.GET.get('page')
+
+    paginator = Paginator(post_list, 15)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
     return render(request, 'fips/main.html', {'categories': categories, 'posts':posts})
