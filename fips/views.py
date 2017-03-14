@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from .models import User, Category, Post
 from django.contrib.auth.decorators import login_required
@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import F
+from .forms import PostForm
 
 # Create your views here.
 def introduction(request):
@@ -42,7 +43,7 @@ def log_out(request):
 @login_required
 def main_view(request):
     categories = Category.objects.filter().order_by('pk')
-    post_list = Post.objects.filter(created_date__lte=timezone.now()).order_by('-created_date')
+    post_list = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     page = request.GET.get('page')
 
     paginator = Paginator(post_list, 15)
@@ -60,3 +61,32 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     Post.objects.filter(id=pk).update(hits=F('hits')+1)
     return render(request, 'fips/post_detail.html', {'categories': categories, 'post': post})
+
+@login_required
+def post_new(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm()
+    return render(request, 'fips/post_edit.html', {'form': form})
+
+@login_required
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'fips/post_edit.html', {'form': form})
