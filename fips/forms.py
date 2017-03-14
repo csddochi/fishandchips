@@ -9,6 +9,14 @@ class PostForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
-        self.fields['subject'].widget.attrs.update({'id': 'subject_id'})
-        self.fields['title'].widget.attrs.update({'id': 'title_id'})
-        self.fields['text'].widget.attrs.update({'id': 'text_id'})
+        self.fields['subject'].widget.attrs.update({
+                'id': 'subject_id',
+                'autofocus':'autofocus',
+            })
+        self.fields['title'].widget.attrs.update({
+                'id': 'title_id',
+            })
+        self.fields['text'].widget.attrs.update({
+                'id': 'text_id',
+                'placeholder': 'write text',
+            })

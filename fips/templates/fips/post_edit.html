@@ -6,16 +6,23 @@
   width: 15%;
 }
 
+#text_id {
+    overflow: visible;
+    min-height: 22em;
+}
+
 #title_id, #text_id {
   width: 70%;
 }
 </style>
 
-  <div style="padding: 5px 5px 5px 50px">
+  <div style="padding: 5px 5px 5px 5px">
+    <center>
     <h1>New post</h1>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
+    </center>
   </div>
 {% endblock %}
