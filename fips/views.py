@@ -90,3 +90,9 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'fips/post_edit.html', {'form': form})
+
+@login_required
+def post_remove(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    return redirect('main')

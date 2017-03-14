@@ -33,7 +33,10 @@
       {% endfor %}
   </div>
   <div class="post" style="height:100%">
+    {% if post.author == user %}
     <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+    {% endif %}
     <h4 style="text-align: center;">{{ post.title }}</h4>
     {% if post.published_date %}
         <div class="date" style="float: right;">
