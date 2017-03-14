@@ -9,7 +9,7 @@ from django.utils.crypto import get_random_string
 # Create your models here.
 class Category(models.Model):
     slug = models.SlugField(max_length=100, unique=True,
-        help_text='my-first-blog if category name is my first blog')
+        help_text='nickname of category name')
     category_name = models.CharField(max_length=50)
     parent = models.ForeignKey('self', blank=True, null=True,
         related_name='child')

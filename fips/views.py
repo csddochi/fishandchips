@@ -96,3 +96,113 @@ def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
     return redirect('main')
+
+@login_required
+def noti_view(request):
+    categories = Category.objects.all().order_by('pk')
+    category = Category.objects.filter(id=1) #1 notification
+    post_list = Post.objects.filter(
+        subject=category
+    ).filter(
+        published_date__lte=timezone.now()
+    ).order_by(
+        '-published_date'
+    )
+    page = request.GET.get('page')
+
+    paginator = Paginator(post_list, 15)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'fips/noti_list.html', {'categories': categories, 'posts':posts})
+
+@login_required
+def fnfc_view(request):
+    categories = Category.objects.all().order_by('pk')
+    category = Category.objects.filter(id=4) #4 fanfic-board
+    post_list = Post.objects.filter(
+        subject=category
+    ).filter(
+        published_date__lte=timezone.now()
+    ).order_by(
+        '-published_date'
+    )
+    page = request.GET.get('page')
+
+    paginator = Paginator(post_list, 15)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'fips/fnfc_list.html', {'categories': categories, 'posts':posts})
+
+@login_required
+def free_view(request):
+    categories = Category.objects.all().order_by('pk')
+    category = Category.objects.filter(id=2) #2 free-board
+    post_list = Post.objects.filter(
+        subject=category
+    ).filter(
+        published_date__lte=timezone.now()
+    ).order_by(
+        '-published_date'
+    )
+    page = request.GET.get('page')
+
+    paginator = Paginator(post_list, 15)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'fips/free_list.html', {'categories': categories, 'posts':posts})
+
+@login_required
+def phot_view(request):
+    categories = Category.objects.all().order_by('pk')
+    category = Category.objects.filter(id=3) #3 photo-board
+    post_list = Post.objects.filter(
+        subject=category
+    ).filter(
+        published_date__lte=timezone.now()
+    ).order_by(
+        '-published_date'
+    )
+    page = request.GET.get('page')
+
+    paginator = Paginator(post_list, 15)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'fips/phot_list.html', {'categories': categories, 'posts':posts})
+
+@login_required
+def stry_view(request):
+    categories = Category.objects.all().order_by('pk')
+    category = Category.objects.filter(id=5) #5 story-board
+    post_list = Post.objects.filter(
+        subject=category
+    ).filter(
+        published_date__lte=timezone.now()
+    ).order_by(
+        '-published_date'
+    )
+    page = request.GET.get('page')
+
+    paginator = Paginator(post_list, 15)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'fips/stry_list.html', {'categories': categories, 'posts':posts})

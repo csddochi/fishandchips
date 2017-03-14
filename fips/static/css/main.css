@@ -9,13 +9,17 @@
     text-align: center;
 }
 
-.author, th, .category {
+.hits, .number {
+  width: 50px;
+}
+
+.author, th, .category, .hits, .number {
   color: black;
   text-align: center;
 }
 
 .author {
-  width: 200px;
+  width: 150px;
 }
 
 .title {
