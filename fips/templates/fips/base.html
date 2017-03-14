@@ -5,20 +5,11 @@
     <title>Fish and Chips</title>
     {% endblock title %}
 
-
     <style>
     .copyright {
        background: auto;
        padding: 5px 5px 10px 10px;
-       height: 30px;
-       position: absolute;
-       bottom: 0;
-       width: 98%;
      }
-
-    .poweredby {
-      float: left;
-    }
     </style>
     {% block css %}
     {% endblock %}
@@ -31,12 +22,12 @@
 	     {% block content %}
 	     {% endblock %}
     </div>
-    <footer>
+    <footer style="position:absolute; width:98%; bottom:10px">
       {% block footer %}
         <div class="copyright">
           <p>
-            <span style="color:black;float:right">Copyright &copy; 2017 FishandChips. All rights reserved.</span>
-            <span class='poweredby' style="color:black;"> Powered by &nbsp;
+            <span style="color:black; float:right;">Copyright &copy; 2017 FishandChips. All rights reserved.</span>
+            <span class='poweredby' style="color:black; float: left;"> Powered by &nbsp;
                 <a href="https://github.com/csddochi/fishandchips">FishNChips</a>
             </span>
           </p>

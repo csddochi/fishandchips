@@ -113,6 +113,13 @@ class Post(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
+    hits = models.IntegerField(default=0)
+
+    def get_prev_post(self):
+        return Post.objects.filter(id__lt=self.id).order_by('-id').first()
+
+    def get_next_post(self):
+        return Post.objects.filter(id__gt=self.id).order_by('id').first()
 
     def publish(self):
         self.published_date = timezone.now()

@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import F
 
 # Create your views here.
 def introduction(request):
@@ -52,3 +53,10 @@ def main_view(request):
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
     return render(request, 'fips/main.html', {'categories': categories, 'posts':posts})
+
+@login_required
+def post_detail(request, pk):
+    categories = Category.objects.filter().order_by('pk')
+    post = get_object_or_404(Post, pk=pk)
+    Post.objects.filter(id=pk).update(hits=F('hits')+1)
+    return render(request, 'fips/post_detail.html', {'categories': categories, 'post': post})

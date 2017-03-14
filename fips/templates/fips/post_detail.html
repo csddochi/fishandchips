@@ -1,0 +1,80 @@
+{% extends 'fips/base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+<title>Post page</title>
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<style>
+.copyright {
+   background: auto;
+   padding: 5px 5px 10px 10px;
+   height: 30px;
+   position: relative;
+   bottom: 0;
+   width: 98%;
+ }
+
+.poweredby {
+  float: left;
+}
+</style>
+{% endblock %}
+
+{% block header-content %}
+<div class="page-header">
+  {% if user.is_authenticated %}
+  <a href="{% url 'main' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+  <a href="{% url 'main' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
+  <p class="top-menu">Hello {{ user.username }} <small><a href="{% url 'logout' %}">Logout</a></small></p>
+  {% if user.is_superuser %}
+  <a href="/admin" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
+  {% endif %}
+  {% endif %}
+  <h1><a href="/main">Fish and Chips</a></h1>
+</div>
+{% endblock %}
+
+{% block content %}
+  <div class='categories'>
+      {% for category in categories %}
+        <h3><a href="">{{ category.category_name }}</h3>
+      {% endfor %}
+  </div>
+  <div class="post" style="height:100%">
+        <p>Number: {{ post.pk }} </p>
+        <p>Hits: {{ post.hits }} </p>
+        <h4 style="text-align: center;">{{ post.title }}</h4>
+        {% if post.published_date %}
+            <div class="date" style="float: right;">
+                {{ post.published_date }}
+            </div>
+        {% endif %}
+        <p style="color: black;">{{ post.text|linebreaksbr }}</p>
+  </div>
+  <div class="page-button" style="position:absolute; right: 150px; bottom: 30px; margin-bottom:30px">
+    {% if post.get_prev_post %}
+    <button type="button" style="width:70px">
+      <a href="{% url 'post_detail' pk=post.get_prev_post.pk %}">Previous</a>
+    </button>
+    {% else %}
+    <button type="button" style="width:70px" disabled='disabled'>Previous</button>
+    {% endif %}
+    <button type="button" style="width:70px">
+      <a href="{% url 'main' %}?page=1">List</a>
+    </button>
+    {% if post.get_next_post %}
+    <button type="button" style="width:70px">
+      <a href="{% url 'post_detail' pk=post.get_next_post.pk %}">Next</a>
+    </button>
+    {% else %}
+    <button type="button" style="width:70px" disabled='disabled'>Next</button>
+    {% endif %}
+  </div>
+
+{% endblock %}
