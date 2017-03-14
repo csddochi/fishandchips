@@ -10,6 +10,13 @@
        background: auto;
        padding: 5px 5px 10px 10px;
      }
+
+     body {
+       position: relative;
+       margin: 0;
+       padding-bottom: 6rem;
+       min-height: 100%;
+     }
     </style>
     {% block css %}
     {% endblock %}
@@ -18,11 +25,11 @@
     {% endblock %}
   </head>
   <body>
-    <div id="content">
+    <div>
 	     {% block content %}
 	     {% endblock %}
     </div>
-    <footer style="position:absolute; width:98%; bottom:10px">
+    <footer style="position:absolute; width:98%; bottom:0;">
       {% block footer %}
         <div class="copyright">
           <p>

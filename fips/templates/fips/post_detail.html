@@ -44,7 +44,7 @@
 
         <p style="color: black;">{{ post.text|linebreaksbr }}</p>
   </div>
-  <div class="page-button" style="position:absolute; right: 150px; bottom: 30px; margin-bottom:30px">
+  <div class="page-button" style="position:absolute; bottom:30px; right: 30px; padding: 1rem;">
     {% if post.get_prev_post %}
     <button type="button" style="width:70px">
       <a href="{% url 'post_detail' pk=post.get_prev_post.pk %}">Previous</a>
