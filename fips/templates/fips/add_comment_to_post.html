@@ -1,0 +1,23 @@
+{% extends 'fips/main.html' %}
+
+{% block content %}
+<style>
+#author_id {
+  width: 30%;
+}
+
+#text_id {
+    overflow: visible;
+    min-height: 22em;
+    width: 45%;
+}
+</style>
+
+ <div style="padding: 5px 5px 5px 50px">
+    <h1>New comment</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Send</button>
+    </form>
+</div>
+{% endblock %}

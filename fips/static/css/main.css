@@ -1,3 +1,14 @@
+body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 6rem;
+  min-height: 450px;
+}
+
+.comment {
+    margin: 20px 0px 20px 20px;
+}
+
 .pagination {
   position: absolute;
   right: 150px;
@@ -13,7 +24,7 @@
   width: 50px;
 }
 
-.author, th, .category, .hits, .number {
+.author, th, .category, .hits, .number, .comments {
   color: black;
   text-align: center;
 }

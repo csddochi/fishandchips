@@ -38,6 +38,7 @@
       <th class='title'>Title</th>
       <th class='author'>Author</th>
       <th class='hits'>Hits</th>
+      <th class='comments'>Comments</th>
       <th>Published date</th>
     </tr>
     {% for post in posts %}
@@ -46,6 +47,7 @@
       <td class='title'><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></td>
       <td class='author'>{{ post.author }}</td>
       <td class='hits'>{{ post.hits }}</td>
+      <td class='comments'><a href="{% url 'post_detail' pk=post.pk %}">{{ post.approved_comments.count }}</a></td>
       <td class="date">{{ post.published_date }}</td>
     </tr>
   {% endfor %}

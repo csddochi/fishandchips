@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Post
+from .models import Post, Comment
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -18,5 +18,22 @@ class PostForm(forms.ModelForm):
             })
         self.fields['text'].widget.attrs.update({
                 'id': 'text_id',
-                'placeholder': 'write text',
+                'placeholder': 'write post',
+            })
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('author', 'text')
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['author'].widget.attrs.update({
+                'id': 'author_id',
+                'autofocus':'autofocus',
+                'placeholdr': 'username or none',
+            })
+        self.fields['text'].widget.attrs.update({
+                'id': 'text_id',
+                'placeholder': 'write comment',
             })
