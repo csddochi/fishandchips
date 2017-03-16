@@ -21,7 +21,7 @@ class Category(models.Model):
     def __unicode__(self):
         p_list = self._recurse_for_parents(self)
         p_list.append(self.category_name)
-        return self.get(separator().join(p_list))
+        return self.get_separator().join(p_list)
 
     def _recurse_for_parents(self, cat_obj):
         p_list = list()

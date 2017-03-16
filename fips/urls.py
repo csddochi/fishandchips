@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^notification', views.noti_view, name='notification'),
     url(r'^fanfic-board', views.fnfc_view, name='fanfic-board'),
     url(r'^free-board', views.free_view, name='free-board'),
-    url(r'^photo-board', views.phot_view, name='photo-board'),
+    url(r'^file-board', views.file_view, name='file-board'),
     url(r'^story-board', views.stry_view, name='story-board'),
     url(r'^admin', admin.site.urls),
     url(r'^.*$', views.introduction, name='introduction'),

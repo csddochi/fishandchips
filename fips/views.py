@@ -164,9 +164,9 @@ def free_view(request):
     return render(request, 'fips/free_list.html', {'categories': categories, 'posts':posts})
 
 @login_required
-def phot_view(request):
+def file_view(request):
     categories = Category.objects.all().order_by('pk')
-    category = Category.objects.filter(id=3) #3 photo-board
+    category = Category.objects.filter(id=3) #3 file-board
     post_list = Post.objects.filter(
         subject=category
     ).filter(
@@ -183,7 +183,7 @@ def phot_view(request):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    return render(request, 'fips/phot_list.html', {'categories': categories, 'posts':posts})
+    return render(request, 'fips/file_list.html', {'categories': categories, 'posts':posts})
 
 @login_required
 def stry_view(request):
