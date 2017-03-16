@@ -37,6 +37,7 @@
       <th class='category'>Category</th>
       <th class='title'>Title</th>
       <th class='author'>Author</th>
+      <th class='hits'>Hits</th>
       <th class='date'><font color='black'>Published date</font></th>
     </tr>
     {% for post in posts %}
@@ -44,6 +45,7 @@
       <td class='category'>{{ post.subject }}</td>
       <td class='title'><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></td>
       <td class='author'>{{ post.author }}</td>
+      <td class='hits'>{{ post.hits }}</td>
       <td class="date">{{ post.published_date }}</td>
     </tr>
   {% endfor %}
