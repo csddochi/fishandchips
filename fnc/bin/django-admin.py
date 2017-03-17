@@ -1,4 +1,4 @@
-#!/Users/charlotte/dev/Gits/fishandchips/fnc/bin/python
+#!/Users/charlotte/dev/Gits/fishandchips/fnc/bin/python3.6
 from django.core import management
 
 if __name__ == "__main__":

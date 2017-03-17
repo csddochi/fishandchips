@@ -134,3 +134,29 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created_date']
         verbose_name_plural = 'Posts'
+
+class UploadFile(models.Model):
+    subject = models.ForeignKey(Category, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    upload_file = models.FileField(upload_to='media/')
+    created_date = models.DateTimeField(default=timezone.now)
+    published_date = models.DateTimeField(blank=True, null=True)
+    hits = models.IntegerField(default=0)
+
+    def get_prev_upload(self):
+        return UploadFile.objects.filter(id__lt=self.id).order_by('-id').first()
+
+    def get_next_upload(self):
+        return UploadFile.objects.filter(id__gt=self.id).order_by('id').first()
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-created_date']
+        verbose_name_plural = 'Upload Files'

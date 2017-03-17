@@ -34,7 +34,8 @@ body {
 }
 
 .title {
-  width: 550px;
+  min-width: 450px;
+  max-width: 550px;
 }
 
 .category {

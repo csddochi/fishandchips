@@ -1,0 +1,70 @@
+{% extends 'fips/main.html' %}
+{% load staticfiles %}
+
+{% block title %}
+<title>File page</title>
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<style>
+.copyright {
+   background: auto;
+   padding: 5px 5px 10px 10px;
+   height: 30px;
+   position: relative;
+   bottom: 0;
+   width: 98%;
+ }
+
+.poweredby {
+  float: left;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class='categories'>
+      {% for category in categories %}
+        <h3><a href="{% url category.slug %}">{{ category.category_name }}</h3>
+      {% endfor %}
+  </div>
+  <div class="post" style="height:100%">
+    {% if upload.author == user %}
+    <a class="btn btn-default" href="{% url 'upload_edit' pk=upload.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    <a class="btn btn-default" href="{% url 'upload_remove' pk=upload.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+    {% endif %}
+    <h4 style="text-align: center;">{{ upload.title }}</h4>
+    {% if upload.published_date %}
+        <div class="date" style="float: right;">
+            {{ upload.published_date }}
+        </div>
+    {% endif %}
+        <p>Number: {{ upload.pk }} &emsp; Hits: {{ upload.hits }} &emsp; Author: {{ upload.author }}</p>
+
+        <a href="{{ upload.upload_file }}" download>{{ upload.upload_file }}</a>
+        <center><img src="{{ upload.upload_file }}"></center>
+  </div>
+  <div class="page-button" style="position:absolute; bottom:30px; right: 30px; padding: 1rem;">
+    {% if upload.get_prev_upload %}
+    <button type="button" style="width:70px">
+      <a href="{% url 'upload_detail' pk=upload.get_prev_upload.pk %}">Previous</a>
+    </button>
+    {% else %}
+    <button type="button" style="width:70px" disabled='disabled'>Previous</button>
+    {% endif %}
+    <button type="button" style="width:70px">
+      <a href="{% url 'file-board' %}?page=1">List</a>
+    </button>
+    {% if upload.get_next_upload %}
+    <button type="button" style="width:70px">
+      <a href="{% url 'upload_detail' pk=upload.get_next_upload.pk %}">Next</a>
+    </button>
+    {% else %}
+    <button type="button" style="width:70px" disabled='disabled'>Next</button>
+    {% endif %}
+  </div>
+{% endblock %}

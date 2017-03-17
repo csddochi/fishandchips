@@ -129,3 +129,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # custom settings
 AUTH_USER_MODEL = 'fips.User'
 LOGIN_REDIRECT_URL = '/main/'
+
+# File upload
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

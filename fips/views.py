@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import User, Category, Post, Comment
+from .models import User, Category, Post, Comment, UploadFile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import F
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, UploadFileForm
+import os
 
 # Create your views here.
 def introduction(request):
@@ -166,24 +167,21 @@ def free_view(request):
 @login_required
 def file_view(request):
     categories = Category.objects.all().order_by('pk')
-    category = Category.objects.filter(id=3) #3 file-board
-    post_list = Post.objects.filter(
-        subject=category
-    ).filter(
+    upload_list = UploadFile.objects.all().filter(
         published_date__lte=timezone.now()
     ).order_by(
         '-published_date'
     )
     page = request.GET.get('page')
 
-    paginator = Paginator(post_list, 15)
+    paginator = Paginator(upload_list, 15)
     try:
-        posts = paginator.page(page)
+        uploads = paginator.page(page)
     except PageNotAnInteger:
-        posts = paginator.page(1)
+        uploads = paginator.page(1)
     except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
-    return render(request, 'fips/file_list.html', {'categories': categories, 'posts':posts})
+        uploads = paginator.page(paginator.num_pages)
+    return render(request, 'fips/file_list.html', {'categories': categories, 'uploads':uploads})
 
 @login_required
 def stry_view(request):
@@ -233,3 +231,55 @@ def comment_remove(request, pk):
     post_pk = comment.post.pk
     comment.delete()
     return redirect('post_detail', pk=post_pk)
+
+
+@login_required
+def upload_detail(request, pk):
+    categories = Category.objects.filter().order_by('pk')
+    upload = get_object_or_404(UploadFile, pk=pk)
+    UploadFile.objects.filter(id=pk).update(hits=F('hits')+1)
+    return render(request, 'fips/upload_detail.html', {'categories': categories, 'upload': upload})
+
+def handle_uploaded_file(file, filename):
+    if not os.path.exists('media/'):
+        os.mkdir('media/')
+    with open('media/' + filename, 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+
+@login_required
+def upload_new(request):
+    if request.method == 'POST':
+        handle_uploaded_file(request.FILES['upload_file'], str(request.FILES['upload_file']))
+        form = UploadFileForm(request.POST)
+        if form.is_valid():
+            upload = form.save(commit=False)
+            upload.author = request.user
+            upload.published_date = timezone.now()
+            upload.save()
+            return redirect('upload_detail', pk=upload.pk)
+    else:
+        form = UploadFileForm()
+    return render(request, 'fips/upload_edit.html', {'form': form})
+
+@login_required
+def upload_edit(request, pk):
+    upload = get_object_or_404(UploadFile, pk=pk)
+    if request.method == 'POST':
+        handle_uploaded_file(request.FILES['upload_file'], str(request.FILES['upload_file']))
+        form = UploadFileForm(request.POST, instance=upload)
+        if form.is_valid():
+            upload = form.save(commit=False)
+            upload.author = request.user
+            upload.published_date = timezone.now()
+            upload.save()
+            return redirect('upload_detail', pk=upload.pk)
+    else:
+        form = UploadFileForm(instance=upload)
+    return render(request, 'fips/upload_edit.html', {'form': form})
+
+@login_required
+def upload_remove(request, pk):
+    upload = get_object_or_404(UploadFile, pk=pk)
+    upload.delete()
+    return redirect('file-board')

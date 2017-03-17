@@ -1,0 +1,30 @@
+{% extends 'fips/main.html' %}
+
+{% block content %}
+<style>
+#subject_id {
+  width: 15%;
+}
+
+#title_id, #upload_file_id {
+  width: 30%;
+}
+</style>
+
+  <div style="padding: 5px 5px 5px 5px">
+    <center>
+    <h1>New File Upload</h1>
+    <form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+        <label>{{ field.label }}</label>
+        {% if field.errors %}
+            {{ field.errors }}
+        {% endif %}
+        {{ field }} <br>
+    {% endfor %}
+    <button type="submit">Upload</button>
+  </form>
+    </center>
+  </div>
+{% endblock %}

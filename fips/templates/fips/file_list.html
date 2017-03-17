@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title %}
-<title>Photo Board</title>
+<title>File Board</title>
 {% endblock title %}
 
 {% block css %}
@@ -15,7 +15,7 @@
 {% block header-content %}
 <div class="page-header">
   {% if user.is_authenticated %}
-  <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+  <a href="{% url 'upload_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
   <p class="top-menu">Hello {{ user.username }} <small><a href="{% url 'logout' %}">Logout</a></small></p>
   {% endif %}
   {% if user.is_superuser %}
@@ -38,32 +38,30 @@
       <th class='title'>Title</th>
       <th class='author'>Author</th>
       <th class='hits'>Hits</th>
-      <th class='comments'>Comments</th>
       <th>Published date</th>
     </tr>
-    {% for post in posts %}
+    {% for upload in uploads %}
     <tr>
-      <td class='number'>{{ post.id }}</td>
-      <td class='title'><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></td>
-      <td class='author'>{{ post.author }}</td>
-      <td class='hits'>{{ post.hits }}</td>
-      <td class='comments'><a href="{% url 'post_detail' pk=post.pk %}">{{ post.approved_comments.count }}</a></td>
-      <td class="date">{{ post.published_date }}</td>
+      <td class='number'>{{ upload.id }}</td>
+      <td class='title'><a href="{% url 'upload_detail' pk=upload.pk %}">{{ upload.title }}</a></td>
+      <td class='author'>{{ upload.author }}</td>
+      <td class='hits'>{{ upload.hits }}</td>
+      <td class="date">{{ upload.published_date }}</td>
     </tr>
   {% endfor %}
 </table>
 <div class="pagination" style="bottom:10px;">
     <span class="step-links">
-        {% if posts.has_previous %}
-            <a href="?page={{ posts.previous_page_number }}">previous</a>
+        {% if uploads.has_previous %}
+            <a href="?page={{ uploads.previous_page_number }}">previous</a>
         {% endif %}
 
         <span class="current">
-            Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+            Page {{ uploads.number }} of {{ uploads.paginator.num_pages }}.
         </span>
 
-        {% if posts.has_next %}
-            <a href="?page={{ posts.next_page_number }}">next</a>
+        {% if uploads.has_next %}
+            <a href="?page={{ uploads.next_page_number }}">next</a>
         {% endif %}
     </span>
 </div>
