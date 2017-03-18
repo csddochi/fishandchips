@@ -45,8 +45,10 @@
     {% endif %}
         <p>Number: {{ upload.pk }} &emsp; Hits: {{ upload.hits }} &emsp; Author: {{ upload.author }}</p>
 
-        <a href="{{ upload.upload_file }}" download>{{ upload.upload_file }}</a>
-        <center><img src="{{ upload.upload_file }}"></center>
+        <a href="{{ upload.upload_file.url }}" download>{{ upload.upload_file }}</a>
+        {% if upload.upload_file %}
+        <center><img src="{{ upload.upload_file.url }}"></center>
+        {% endif %}
   </div>
   <div class="page-button" style="position:absolute; bottom:30px; right: 30px; padding: 1rem;">
     {% if upload.get_prev_upload %}

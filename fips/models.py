@@ -139,7 +139,7 @@ class UploadFile(models.Model):
     subject = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    upload_file = models.FileField(upload_to='media/')
+    upload_file = models.FileField() # default media
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
     hits = models.IntegerField(default=0)

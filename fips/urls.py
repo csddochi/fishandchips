@@ -3,6 +3,7 @@ from . import views
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
 
 urlpatterns = [
     url(r'^main', views.main_view, name='main'),
@@ -22,6 +23,8 @@ urlpatterns = [
     url(r'^upload/new/$', views.upload_new, name='upload_new'),
     url(r'^upload/(?P<pk>[0-9]+)/edit/$', views.upload_edit, name='upload_edit'),
     url(r'^upload/(?P<pk>\d+)/remove/$', views.upload_remove, name='upload_remove'),
+
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
     url(r'^notification', views.noti_view, name='notification'),
     url(r'^fanfic-board', views.fnfc_view, name='fanfic-board'),

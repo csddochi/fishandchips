@@ -240,18 +240,18 @@ def upload_detail(request, pk):
     UploadFile.objects.filter(id=pk).update(hits=F('hits')+1)
     return render(request, 'fips/upload_detail.html', {'categories': categories, 'upload': upload})
 
-def handle_uploaded_file(file, filename):
+def handle_uploaded_file(file):
     if not os.path.exists('media/'):
         os.mkdir('media/')
-    with open('media/' + filename, 'wb+') as destination:
+    with open('media/' + str(file), 'wb+') as destination:
         for chunk in file.chunks():
             destination.write(chunk)
 
 @login_required
 def upload_new(request):
     if request.method == 'POST':
-        handle_uploaded_file(request.FILES['upload_file'], str(request.FILES['upload_file']))
-        form = UploadFileForm(request.POST)
+        handle_uploaded_file(request.FILES['upload_file'])
+        form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             upload = form.save(commit=False)
             upload.author = request.user
@@ -266,8 +266,8 @@ def upload_new(request):
 def upload_edit(request, pk):
     upload = get_object_or_404(UploadFile, pk=pk)
     if request.method == 'POST':
-        handle_uploaded_file(request.FILES['upload_file'], str(request.FILES['upload_file']))
-        form = UploadFileForm(request.POST, instance=upload)
+        handle_uploaded_file(request.FILES['upload_file'])
+        form = UploadFileForm(request.POST, request.FILES, instance=upload)
         if form.is_valid():
             upload = form.save(commit=False)
             upload.author = request.user
