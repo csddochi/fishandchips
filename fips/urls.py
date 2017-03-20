@@ -15,6 +15,10 @@ urlpatterns = [
     url(r'^post/(?P<pk>[0-9]+)/edit/$', views.post_edit, name='post_edit'),
     url(r'^post/(?P<pk>\d+)/remove/$', views.post_remove, name='post_remove'),
     url(r'^post/(?P<pk>\d+)/comment/$', views.add_comment_to_post, name='add_comment_to_post'),
+    url(r'^post/(?P<pk>\d+)/imagecomment/$', views.add_image_comment, name='add_image_comment'),
+
+    url(r'^imagecomment/(?P<pk>\d+)/approve/$', views.image_comment_approve, name='image_comment_approve'),
+    url(r'^imagecomment/(?P<pk>\d+)/remove/$', views.image_comment_remove, name='image_comment_remove'),
 
     url(r'^comment/(?P<pk>\d+)/approve/$', views.comment_approve, name='comment_approve'),
     url(r'^comment/(?P<pk>\d+)/remove/$', views.comment_remove, name='comment_remove'),

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Post, Comment, UploadFile
+from .models import Post, Comment, UploadFile, ImageComment
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -38,6 +38,24 @@ class CommentForm(forms.ModelForm):
                 'placeholder': 'write comment',
             })
 
+class ImageCommentForm(forms.ModelForm):
+    class Meta:
+        model = ImageComment
+        fields = ('text', 'image')
+
+    def __init__(self, *args, **kwargs):
+        super(ImageCommentForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
+        self.fields['text'].widget.attrs.update({
+                'id': 'text_id',
+                'autofocus':'autofocus',
+                'placeholdr': 'write a comment',
+            })
+        self.fields['image'].widget.attrs.update({
+                'id': 'image_id',
+                'placeholder': 'upload a image',
+            })
+
 class UploadFileForm(forms.ModelForm):
     class Meta:
         model = UploadFile
@@ -56,5 +74,5 @@ class UploadFileForm(forms.ModelForm):
             })
         self.fields['upload_file'].widget.attrs.update({
                 'id': 'upload_file_id',
-                'placeholder': 'upload file',
+                'placeholder': 'upload a file',
             })

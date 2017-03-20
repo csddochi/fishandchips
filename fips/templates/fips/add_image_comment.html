@@ -1,0 +1,24 @@
+{% extends 'fips/main.html' %}
+
+{% block content %}
+<style>
+#text_id {
+    overflow: visible;
+    min-height: 22em;
+    width: 45%;
+}
+
+#image_id {
+  width: 30%;
+}
+</style>
+
+ <div style="padding: 5px 5px 5px 50px">
+    <h1>New Image Comment</h1>
+    <form method="POST" class="post-form" enctype="multipart/form-data" novalidate>
+    	{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Send</button>
+    </form>
+</div>
+{% endblock %}

@@ -115,6 +115,9 @@ class Post(models.Model):
     published_date = models.DateTimeField(blank=True, null=True)
     hits = models.IntegerField(default=0)
 
+    def get_subj_name(self):
+        return self.subject.category_name
+
     def get_prev_post(self):
         return Post.objects.filter(id__lt=self.id).order_by('-id').first()
 
@@ -127,6 +130,9 @@ class Post(models.Model):
 
     def approved_comments(self):
         return self.comments.filter(approved_comment=True)
+
+    def image_comments(self):
+        return self.image_comments.filter(approved_comment=True)
 
     def __str__(self):
         return self.title
@@ -160,3 +166,27 @@ class UploadFile(models.Model):
     class Meta:
         ordering = ['-created_date']
         verbose_name_plural = 'Upload Files'
+
+class ImageComment(models.Model):
+    post = models.ForeignKey('fips.Post', related_name='image_comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    image = models.ImageField()
+    created_date = models.DateTimeField(default=timezone.now)
+    published_date = models.DateTimeField(blank=True, null=True)
+    approved_comment = models.BooleanField(default=False)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def approve(self):
+        self.approved_comment = True
+        self.save()
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        ordering = ['-created_date']
+        verbose_name_plural = 'Image Comments'

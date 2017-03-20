@@ -1,13 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import User, Category, Post, Comment, UploadFile
+from .models import User, Category, Post, Comment, UploadFile, ImageComment
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import F
-from .forms import PostForm, CommentForm, UploadFileForm
+from .forms import PostForm, CommentForm, UploadFileForm, ImageCommentForm
 import os
 
 # Create your views here.
@@ -60,7 +60,8 @@ def main_view(request):
 def post_detail(request, pk):
     categories = Category.objects.filter().order_by('pk')
     post = get_object_or_404(Post, pk=pk)
-    Post.objects.filter(id=pk).update(hits=F('hits')+1)
+    if post.author != request.user:
+        Post.objects.filter(id=pk).update(hits=F('hits')+1)
     return render(request, 'fips/post_detail.html', {'categories': categories, 'post': post})
 
 @login_required
@@ -219,6 +220,31 @@ def add_comment_to_post(request, pk):
         form = CommentForm()
     return render(request, 'fips/add_comment_to_post.html', {'form': form})
 
+def handle_uploaded_file(file):
+    if not os.path.exists('media/'):
+        os.mkdir('media/')
+    with open('media/' + str(file), 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+
+@login_required
+def add_image_comment(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        print(request.FILES)
+        form = ImageCommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['image'])
+            image = form.save(commit=False)
+            image.post = post
+            image.author = request.user
+            image.published_date = timezone.now()
+            image.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = ImageCommentForm()
+    return render(request, 'fips/add_image_comment.html', {'form': form})
+
 @login_required
 def comment_approve(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
@@ -232,20 +258,27 @@ def comment_remove(request, pk):
     comment.delete()
     return redirect('post_detail', pk=post_pk)
 
+@login_required
+def image_comment_approve(request, pk):
+    image_comment = get_object_or_404(ImageComment, pk=pk)
+    image_comment.approve()
+    return redirect('post_detail', pk=image_comment.post.pk)
+
+@login_required
+def image_comment_remove(request, pk):
+    image_comment = get_object_or_404(ImageComment, pk=pk)
+    post_pk = image_comment.post.pk
+    image_comment.delete()
+    return redirect('post_detail', pk=post_pk)
+
 
 @login_required
 def upload_detail(request, pk):
     categories = Category.objects.filter().order_by('pk')
     upload = get_object_or_404(UploadFile, pk=pk)
-    UploadFile.objects.filter(id=pk).update(hits=F('hits')+1)
+    if upload.author != request.user:
+        UploadFile.objects.filter(id=pk).update(hits=F('hits')+1)
     return render(request, 'fips/upload_detail.html', {'categories': categories, 'upload': upload})
-
-def handle_uploaded_file(file):
-    if not os.path.exists('media/'):
-        os.mkdir('media/')
-    with open('media/' + str(file), 'wb+') as destination:
-        for chunk in file.chunks():
-            destination.write(chunk)
 
 @login_required
 def upload_new(request):

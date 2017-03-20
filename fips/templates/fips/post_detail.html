@@ -46,7 +46,11 @@
             {{ post.published_date }}
         </div>
     {% endif %}
-        <p>Number: {{ post.pk }} &emsp; Hits: {{ post.hits }} &emsp; Author: {{ post.author }}</p>
+        <p>Number: {{ post.pk }} &emsp; Hits: {{ post.hits }}</p>
+
+        {% if post.author == user or user.is_staff or user.is_superuser%}
+        <p>Author: {{ post.author }}</p>
+        {% endif %}
 
         <p style="color: black;">{{ post.text|linebreaksbr }}</p>
   </div>
@@ -72,21 +76,41 @@
 
 <div class='post'>
   <hr>
-  <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
-  {% for comment in post.comments.all %}
-    {% if user.is_authenticated or comment.approved_comment %}
-      <div class="comment">
-          <div class="date" style="float: right;">{{ comment.created_date }}</div>
-          {% if not comment.approved_comment %}
-            <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-            <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
-          {% endif %}
-          <strong>{{ comment.author }}</strong>
-          <p>{{ comment.text|linebreaks }}</p>
+  {% if post.get_subj_name == 'Free Board' %}
+    <a class="btn btn-default" href="{% url 'add_image_comment' pk=post.pk %}">Add image comment</a>
+    {% for image_comment in post.image_comments.all %}
+      {% if user.is_authenticated or image_comment.approved_comment %}
+       <div class="comment">
+        <div class="date" style="float: right;">{{ image_comment.created_date }}</div>
+        {% if not image_comment.approved_comment %}
+          <a class="btn btn-default" href="{% url 'image_comment_remove' pk=image_comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+          <a class="btn btn-default" href="{% url 'image_comment_approve' pk=image_comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+        {% endif %}
+        <strong>{{ image_comment.author }}</strong><br>
+        <br><img src={{ image_comment.image.url }} style="max-width: 400px; max-height: 300px">
+        <p>{{ image_comment.text|linebreaks }}</p>
       </div>
       {% endif %}
-  {% empty %}
+      {% empty %}
       <p>No comments here yet :(</p>
-  {% endfor %}
+    {% endfor %}
+  {% else %}
+    <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
+    {% for comment in post.comments.all %}
+      {% if user.is_authenticated or comment.approved_comment %}
+       <div class="comment">
+        <div class="date" style="float: right;">{{ comment.created_date }}</div>
+        {% if not comment.approved_comment %}
+          <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+          <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+        {% endif %}
+        <strong>{{ comment.author }}</strong>
+        <p>{{ comment.text|linebreaks }}</p>
+      </div>
+      {% endif %}
+      {% empty %}
+      <p>No comments here yet :(</p>
+    {% endfor %}
+  {% endif%}
 </div>
 {% endblock %}
