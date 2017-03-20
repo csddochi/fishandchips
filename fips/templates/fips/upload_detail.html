@@ -4,7 +4,7 @@
 {% block title %}
 <title>File page</title>
 {% endblock title %}
-
+<meta name="robots" content="noindex, nofollow" />
 {% block css %}
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
@@ -37,6 +37,9 @@
     <a class="btn btn-default" href="{% url 'upload_edit' pk=upload.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
     <a class="btn btn-default" href="{% url 'upload_remove' pk=upload.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
     {% endif %}
+    {% if user.is_staff %}
+  <a href="/admin" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
+  {% endif %}
     <h4 style="text-align: center;">{{ upload.title }}</h4>
     {% if upload.published_date %}
         <div class="date" style="float: right;">

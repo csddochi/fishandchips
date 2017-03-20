@@ -76,7 +76,7 @@ class Comment(models.Model):
         return self.text
 
     class Meta:
-        ordering = ['created_date']
+        ordering = ['-created_date']
         verbose_name_plural = 'Comments'
 
 class User(AbstractUser):
