@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from .models import User, Category, Post, Comment, UploadFile, ImageComment
@@ -9,6 +10,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import F
 from .forms import PostForm, CommentForm, UploadFileForm, ImageCommentForm
 import os
+from django.db import IntegrityError
 
 # Create your views here.
 def introduction(request):
@@ -23,11 +25,15 @@ def sign_in(request):
         login(request, user)
         return HttpResponseRedirect('/main/')
     else: # create a user account
-        return sign_up(request, username, password)
+        try:
+            return sign_up(request, username, password)
+        except IntegrityError:
+            return HttpResponseRedirect('/login/')
 
 def sign_up(request, username, password):
     email = request.POST.get('email')
     _referrer = request.POST.get('referrer')
+    print('referrer:', _referrer)
     if email is not None and _referrer is not None:
         _password = make_password(password)
         _user = User(username=username, email=email, password=_password)
