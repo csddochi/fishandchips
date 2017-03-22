@@ -20,20 +20,27 @@ def sign_in(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
     print(request.POST)
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return HttpResponseRedirect('/main/')
-    else: # create a user account
-        try:
-            return sign_up(request, username, password)
-        except IntegrityError:
-            return HttpResponseRedirect('/login/')
+    if username is '':
+        return render(request, 'registration/login.html', {})
+    else:
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect('/main/')
+        else: # create a user account
+            try:
+                return sign_up(request, username, password)
+            except IntegrityError:
+                return HttpResponseRedirect('/login/')
 
 def sign_up(request, username, password):
     email = request.POST.get('email')
     _referrer = request.POST.get('referrer')
     print('referrer:', _referrer)
+    referrers = str(_referrer).split('-')
+    for r in referrers:
+        if not User.objects.filter(ref_code__exact=r):
+            return HttpResponseRedirect('/')
     if email is not None and _referrer is not None:
         _password = make_password(password)
         _user = User(username=username, email=email, password=_password)
